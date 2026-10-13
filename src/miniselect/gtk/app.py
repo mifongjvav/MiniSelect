@@ -19,11 +19,11 @@ import sys
 import gi
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, Gdk, GLib, Gio
+gi.require_version("Gdk", "4.0")
+from gi.repository import Gdk, Gio, GLib, Gtk
 
-from ..shared.config import _
 from ..shared.browser import generate_ls_menu
-
+from ..shared.config import _
 
 # The CSS rule only needs to be installed once per display, no matter how many
 # windows we create.
@@ -156,9 +156,7 @@ class MiniSelectWindow(Gtk.ApplicationWindow):
 
         try:
             gio_file = Gio.File.new_for_path(self._current_path)
-            self._file_monitor = gio_file.monitor_directory(
-                Gio.FileMonitorFlags.NONE, None
-            )
+            self._file_monitor = gio_file.monitor_directory(Gio.FileMonitorFlags.NONE, None)
             self._file_monitor.connect("changed", self._on_file_changed)
         except Exception:
             # Fallback: no monitoring if GIO fails
@@ -275,9 +273,7 @@ class MiniSelectWindow(Gtk.ApplicationWindow):
                     entry.set_width_chars(10)
                     entry.set_max_width_chars(20)
                     entry.set_hexpand(False)
-                    entry.connect(
-                        "activate", lambda e, k=key: self._execute_input_row(k)
-                    )
+                    entry.connect("activate", lambda e, k=key: self._execute_input_row(k))
                     label_box.append(entry)
 
                     confirm_btn = Gtk.Button()
@@ -286,9 +282,7 @@ class MiniSelectWindow(Gtk.ApplicationWindow):
                     confirm_btn.set_child(confirm_img)
                     confirm_btn.add_css_class("flat")
                     confirm_btn.set_tooltip_text(_("ok"))
-                    confirm_btn.connect(
-                        "clicked", lambda b, k=key: self._execute_input_row(k)
-                    )
+                    confirm_btn.connect("clicked", lambda b, k=key: self._execute_input_row(k))
                     label_box.append(confirm_btn)
                 else:
                     if self.file_browser_mode and isinstance(val, dict):
@@ -414,7 +408,7 @@ class MiniSelectWindow(Gtk.ApplicationWindow):
         return False
 
     def _go_back(self):
-        title, parent_data, prev_index, path = self.nav_stack.pop()
+        _title, parent_data, prev_index, path = self.nav_stack.pop()
         self.current_data = parent_data
         self._current_path = path
         self.selected_index = prev_index
@@ -489,9 +483,7 @@ class MiniSelectWindow(Gtk.ApplicationWindow):
         key_ctrl.connect(
             "key-pressed",
             lambda c, k, kc, s: (
-                dialog.close()
-                if k in (Gdk.KEY_Escape, Gdk.KEY_Return, Gdk.KEY_KP_Enter)
-                else False
+                dialog.close() if k in (Gdk.KEY_Escape, Gdk.KEY_Return, Gdk.KEY_KP_Enter) else False
             ),
         )
         dialog.add_controller(key_ctrl)
@@ -628,7 +620,7 @@ class MiniSelectApp(Gtk.Application):
 
     def __init__(
         self,
-        menu_data: dict = None,
+        menu_data: dict | None = None,
         file_browser_mode: bool = False,
         on_select=None,
         initial_path: str = ".",

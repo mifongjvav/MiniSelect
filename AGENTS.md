@@ -126,6 +126,21 @@ app.run(None)
 
 运行 GUI 测试需要可用的显示（`DISPLAY` / `WAYLAND_DISPLAY`）；出现 `Gdk-WARNING ... swapchain` 之类的 Vulkan 警告属正常现象，可忽略。
 
+## 完成任务后必须运行 Ruff
+
+**每完成一项任务（改完代码准备提交前），都必须运行 Ruff，并且让它通过，不得提交未通过的结果。** 命令：
+
+```bash
+.venv/bin/ruff check --fix src    # 代码检查，自动修复可修复项
+.venv/bin/ruff format src         # 格式化
+.venv/bin/ruff check src          # 复查，必须显示 All checks passed!
+.venv/bin/ruff format --check src # 必须显示 already formatted
+```
+
+- 规则集、行宽、忽略项在 `pyproject.toml` 的 `[tool.ruff]` 中显式固定，请遵循现有配置；如确需调整规则，请说明理由。
+- 不要用 `# noqa` 绕过问题，除非确属误报并附简短说明。
+- 新增的用户可见字符串若较长，可用括号内的隐式字符串拼接换行，不要为绕过 E501 而破坏内容。
+
 ## 提交约定
 
 - 提交信息使用中文，首行为 `类型: 简要描述`（如 `feat:`、`fix:`、`docs:`、`refactor:`），正文分点说明。

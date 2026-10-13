@@ -4,6 +4,7 @@ import os
 
 try:
     import yaml
+
     HAS_YAML = True
 except ImportError:
     HAS_YAML = False
@@ -21,7 +22,17 @@ STRINGS = {
         "exit": "退出",
         "copy": "复制",
         "help_title": "帮助",
-        "help_text": "快捷键:\n  ↑/↓  导航\n  Enter 确认/进入\n  Esc   返回/退出\n  .     显示/隐藏隐藏文件\n  H     显示此帮助\n\nMiniSelect v0.3.0\nGTK4 浮动菜单应用",
+        "help_text": (
+            "快捷键:\n"
+            "  ↑/↓  导航\n"
+            "  Enter 确认/进入\n"
+            "  Esc   返回/退出\n"
+            "  .     显示/隐藏隐藏文件\n"
+            "  H     显示此帮助\n"
+            "\n"
+            "MiniSelect v0.3.0\n"
+            "GTK4 浮动菜单应用"
+        ),
     },
     "en_US": {
         "error_title": "Error",
@@ -35,8 +46,18 @@ STRINGS = {
         "exit": "Exit",
         "copy": "Copy",
         "help_title": "Help",
-        "help_text": "Shortcuts:\n  ↑/↓  Navigate\n  Enter Confirm/Enter\n  Esc   Back/Exit\n  .     Toggle hidden files\n  H     Show this help\n\nMiniSelect v0.3.0\nGTK4 Floating Menu App",
-    }
+        "help_text": (
+            "Shortcuts:\n"
+            "  ↑/↓  Navigate\n"
+            "  Enter Confirm/Enter\n"
+            "  Esc   Back/Exit\n"
+            "  .     Toggle hidden files\n"
+            "  H     Show this help\n"
+            "\n"
+            "MiniSelect v0.3.0\n"
+            "GTK4 Floating Menu App"
+        ),
+    },
 }
 
 
@@ -47,9 +68,7 @@ def load_config():
 
     # src/miniselect/shared/config.py -> project root is four levels up.
     package_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(
-        os.path.dirname(os.path.dirname(package_dir))
-    )
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(package_dir)))
 
     candidates = [
         os.path.join(project_root, "config.yaml"),
@@ -61,7 +80,7 @@ def load_config():
         for path in dict.fromkeys(candidates):
             if os.path.exists(path):
                 try:
-                    with open(path, "r", encoding="utf-8") as f:
+                    with open(path, encoding="utf-8") as f:
                         loaded = yaml.safe_load(f)
                         if isinstance(loaded, dict):
                             config.update(loaded)

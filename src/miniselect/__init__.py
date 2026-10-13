@@ -12,19 +12,19 @@ CLI usage:
 """
 
 from .shared.browser import generate_ls_menu
+from .shared.config import STRINGS, _, load_config
 from .shared.validation import validate_commands
-from .shared.config import _, load_config, STRINGS
 
 __all__ = [
-    "run_menu",
+    "STRINGS",
     "MiniSelectApp",
     "MiniSelectWindow",
-    "generate_ls_menu",
-    "validate_commands",
-    "show_error_dialog",
     "_",
+    "generate_ls_menu",
     "load_config",
-    "STRINGS",
+    "run_menu",
+    "show_error_dialog",
+    "validate_commands",
 ]
 
 # These live in the GTK-backed subpackage; import them lazily so that pure
@@ -45,7 +45,9 @@ def __getattr__(name):
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
-def run_menu(menu_data: dict, file_browser_mode: bool = False, on_select=None, initial_path: str = ".") -> None:
+def run_menu(
+    menu_data: dict, file_browser_mode: bool = False, on_select=None, initial_path: str = "."
+) -> None:
     """Run MiniSelect with GTK4 backend.
 
     Args:
@@ -55,5 +57,11 @@ def run_menu(menu_data: dict, file_browser_mode: bool = False, on_select=None, i
         initial_path: Initial directory path for file browser mode (used for hidden file toggle).
     """
     from .gtk.app import MiniSelectApp
-    app = MiniSelectApp(menu_data, file_browser_mode=file_browser_mode, on_select=on_select, initial_path=initial_path)
+
+    app = MiniSelectApp(
+        menu_data,
+        file_browser_mode=file_browser_mode,
+        on_select=on_select,
+        initial_path=initial_path,
+    )
     app.run(None)

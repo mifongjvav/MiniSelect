@@ -5,7 +5,9 @@ import shlex
 
 
 def generate_ls_menu(path: str = ".", show_hidden: bool = False) -> dict:
-    """Generate a menu from directory contents. Directories become lazy submenus, files become commands.
+    """Generate a menu from directory contents.
+
+    Directories become lazy submenus, files become commands.
 
     Args:
         path: Directory path to list.

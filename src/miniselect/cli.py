@@ -4,10 +4,10 @@ import json
 import os
 import sys
 
+from .gtk.dialogs import show_error_dialog
+from .shared.browser import generate_ls_menu
 from .shared.config import _
 from .shared.validation import validate_commands
-from .shared.browser import generate_ls_menu
-from .gtk.dialogs import show_error_dialog
 
 
 def _looks_like_json(arg: str) -> bool:
